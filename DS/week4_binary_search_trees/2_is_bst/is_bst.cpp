@@ -30,10 +30,36 @@ int main() {
     cin >> key >> left >> right;
     tree.push_back(Node(key, left, right));
   }
-  if (IsBinarySearchTree(tree) {
-    cout << "CORRECT" << endl;
-  } else {
-    cout << "INCORRECT" << endl;
+  int tTraversed=0;
+  for(int i=0;i<nodes;i++){
+      int key;
+      int lkey=-1;
+      int rkey=-1;
+      key = tree[i].key;
+      if(tree[i].left!=-1){
+          lkey=tree[tree[i].left].key;
+      } 
+      if(tree[i].right!=-1){
+          rkey=tree[tree[i].right].key;
+      }
+      
+      if(lkey!=-1){
+        if(lkey>key)
+            break;
+      }
+      if(rkey!=-1){
+        if(rkey<key)
+            break;
+      }
+      
+      tTraversed++;
   }
+  
+  if(tTraversed==nodes){
+      std::cout<<"CORRECT"<<"\n";
+  }else{
+      std::cout<<"INCORRECT"<<"\n";
+  }
+  
   return 0;
 }

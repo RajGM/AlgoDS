@@ -30,87 +30,30 @@ public:
     left.resize(n);
     right.resize(n);
     isVisited.resize(n);
+    std::cout<<"Before input"<<"\n";
+    int val;
     for (int i = 0; i < n; i++) {
-      int val;
-      int lI;
-      int rI;
-      cin>>val;
-      key[i]=val; 
-      cin>> lI;
-      left[i] = lI;
-      
-      if(lI!=-1){
-        pqL.push(lI);  
-      }
-      
-      cin >> right[i];
-      //indexR[val] = i;
+      cin >> val >> left[i] >> right[i]; 
+      key[i]=val;
       indexR.insert ( std::pair<int,int>(val,i) );
-      isVisited[i]=false;
+    }
+    std::cout<<"After input"<<"\n";
+    for(int i=0;i<n;i++){
+        isVisited[i]=false;
     }
   }
   
   vector <int> in_order() {
-    std::cout<<"F12"<<"\n";
-    for(int i=0;i<isVisited.size();i++){
-        isVisited[i]=false;
-    }
-    
     vector<int> result;    
-    std::stack<int> recordS;
-    std::cout<<"F11"<<"\n";
-    recordS.push(key[0]);
-    int currV = recordS.top();
-    int currI = indexR.find(currV)->second;
     
-    std::cout<<"F1"<<"\n";
-    while(!recordS.empty()){
-        std::cout<<"F2"<<"\n";
-        if(result.size()==n)
-        break;
-        currV = recordS.top();
-        currI = indexR.find(currV)->second;
-        std::cout<<"F3"<<"\n";
-        if(left[currI]==-1){
-           /*
-            currV = recordS.top();
-            currI = indexR.find(currV)->second;
-            */
-            std::cout<<"F6"<<"\n";
-            recordS.pop();
-            result.push_back(currV);
-            isVisited[currI]=true;
-            std::cout<<"F7"<<"\n";
-            while(right[currI]==-1){
-                currV = recordS.top();
-                currI = indexR.find(currV)->second;
-                recordS.pop();
-                result.push_back(currV);
-                isVisited[currI]=true;
-            }
-            currI = right[currI];
-            currV = key[currI];
-            recordS.push(currV);
-        }else{
-            /*
-            if(isVisited[currI]==false){
-            recordS.push(currV);   
-           }
-           */
-           std::cout<<"F5"<<"\n";
-            currI = left[currI];
-            currV = key[currI];
-            recordS.push(currV);
-            }   
-        std::cout<<"F4"<<"\n";
-    }  
+    std::cout<<"Infinite IN"<<"\n"; 
     
     return result;
   
   }
 
   vector <int> pre_order() {
-      
+      std::cout<<"Infinite pre"<<"\n";
     for(int i=0;i<isVisited.size();i++){
         isVisited[i]=false;
     }
@@ -165,8 +108,35 @@ public:
 
   vector <int> post_order() {
     vector<int> result;
-    // Finish the implementation
-    // You may need to add a new recursive method to do that
+    std::stack<int> recordS;
+    
+    for(int i=0;i<isVisited.size();i++){
+        isVisited[i]=false;
+    }
+    
+    recordS.push(key[0]);
+    int currV = recordS.top();
+    int currI = indexR.find(currV)->second;
+    std::cout<<"Infinite 1"<<"\n";
+    while(!recordS.empty()){
+        currV = recordS.top();
+        currI = indexR.find(currV)->second;
+        if(left[currI]==-1){
+            result.push_back(currV);
+            recordS.pop();
+            while(right[currI]==-1){
+                currV = recordS.top();
+                currI = indexR.find(currV)->second;
+                recordS.pop();
+            }
+            currI = right[currI];
+            currV = key[currI];
+        }else{
+            currI = left[currI];
+            currV = key[currI];
+            recordS.push(currV);
+        }
+    }
     
     return result;
   }
