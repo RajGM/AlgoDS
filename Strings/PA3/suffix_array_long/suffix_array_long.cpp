@@ -3,6 +3,8 @@
 #include <string>
 #include <vector>
 #include <utility>
+#include <map>
+
 
 using std::cin;
 using std::cout;
@@ -12,14 +14,28 @@ using std::pair;
 using std::string;
 using std::vector;
 
-// Build suffix array of the string text and
-// return a vector result of the same length as the text
-// such that the value result[i] is the index (0-based)
-// in text where the i-th lexicographically smallest
-// suffix of text starts.
 vector<int> BuildSuffixArray(const string& text) {
   vector<int> result;
-  // Implement this function yourself
+  std::map<string,int> mymap;
+  vector<string> suffStrings(text.size());
+  
+  for(int i=0;i<text.size();i++){
+    string tmpS;
+    tmpS.resize(text.size()-i);
+    for(int j=i,index=0;j<text.size();j++,index++){
+      tmpS[index] = text[j];
+    }
+    suffStrings[i]=tmpS;
+    mymap.insert ( std::pair<string,int>(tmpS,i) );
+  }
+  
+  std::sort(suffStrings.begin(),suffStrings.end());
+  for(int i=0;i<text.size();i++){
+    string tmpS = suffStrings[i];
+    result.push_back(mymap.find(tmpS)->second);
+  }
+  
+  
   return result;
 }
 
