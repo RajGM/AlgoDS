@@ -24,23 +24,17 @@ int o_w(int W, const vector<int> &w) {
   return c[W];
 }
 
+/*
 int opti_w(int w,const vector<int> &wA){
     int len = wA.size();
-    //std::reverse(wA.begin(),wA.begin()+len);
     std::vector<std::vector<int>> strMat(w+1,std::vector<int>(wA.size()+1,0));
-   for(int i=1;i<=w;i++){
-       for(int j=1;j<=len;j++){
+   for(int i=1;i<w;i++){
+       for(int j=1;j<len;j++){
            strMat[j][i] = strMat[j][i-1];
-           std::cout<<"Working point1"<<"\n";
            if(wA[i]<=w){
-               std::cout<<"Working point2"<<"\n";
-               std::cout<<"J:"<<j<<" I:"<<i<<" wA[i]:"<<wA[i]<<"\n";
                int val = strMat[j-wA[i]][i-1];
-               std::cout<<"Working point3"<<"\n";
                if(strMat[j][i]<val){
-                std::cout<<"Working point4"<<"\n";
                     strMat[j][i] = val;
-               std::cout<<"Working point5"<<"\n";
                }
            }
        }
@@ -48,7 +42,34 @@ int opti_w(int w,const vector<int> &wA){
    
     return strMat[w][len];
 }
+*/
 
+int opti_w(int W,const std::vector<int> &w,int n){
+    std::vector<std::vector<int>> value(w.size());
+    for(int i=0;i<value.size();i++){
+        value[i] = vector<int>(w.size());
+        for(int j=0;j<value.size();j++){
+            if(j==0 || i ==0){
+            value[i][j] = 0;
+            }
+        }
+    }
+    
+    for(int i=1;i<n;i++){
+        for(int j=1;j<w.size();j++){
+            value[j][i]=value[j][i-1];
+            if(w[i]<=j){
+                int val = value[j-w[i]][i-1]; +w[i];
+                if(value[j][i]<val){
+                    value[j][i]=val;
+                }
+            }
+        }
+    }
+    
+    
+    return value[w.size()-1][w.size()-1];
+}
 
 int main() {
   int n, W;
@@ -57,6 +78,6 @@ int main() {
   for (int i = 0; i < n; i++) {
     std::cin >> w[i];
   }
-  //opti_w(W, w);
-  std::cout << o_w(W, w) << '\n';
+  std::cout<<opti_w(W, w, n);
+  //std::cout << o_w(W, w) << '\n';
 }
