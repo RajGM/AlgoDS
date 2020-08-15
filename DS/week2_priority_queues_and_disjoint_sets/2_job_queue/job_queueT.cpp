@@ -16,8 +16,6 @@ struct queueDS{
 struct CompareHeight { 
     bool operator()(queueDS p1, queueDS p2) 
     { 
-        // return "true" if "p1" is ordered  
-        // before "p2", for example: 
         if(p1.nfreeTime > p2.nfreeTime){
             return true;   
         }else if(p1.nfreeTime < p2.nfreeTime){
@@ -52,36 +50,16 @@ class JobQueue {
     }
 
     void AssignJobs() {
-        // TODO: replace this code with a faster algorithm.
         assigned_workers_.resize(jobs_.size());
         start_times_.resize(jobs_.size());
-        vector<long long> next_free_time(num_workers_, 0);
-        //std::priority_queue<queueDS> q;
         std::priority_queue<queueDS, vector<queueDS>, CompareHeight> q;
         queueDS qds;
         for(int i=0;i<num_workers_;i++){
             qds.worker=i;
             qds.nfreeTime = 0;
-            //std::cout<<"i:"<<i<<"\n";
-            //std::cout<<"qds.worker:"<<qds.worker<<"\n";
             q.push(qds);
         }
-        
-        /*
-        for(int i=0;i<num_workers_;i++){
-            std::cout<<q.top().worker<<"\n";
-            q.pop();
-        }
-        
-        for(int i=0;i<num_workers_;i++){
-            qds.worker=i;
-            qds.nfreeTime = 0;
-            //std::cout<<"i:"<<i<<"\n";
-            std::cout<<"qds.worker:"<<qds.worker<<"\n";
-            q.push(qds);
-        }
-        */
-       
+               
         queueDS qd;
         for (int i = 0; i < jobs_.size(); i++) {
             int duration = jobs_[i];
@@ -95,8 +73,6 @@ class JobQueue {
             q.push(qd);
             assigned_workers_[i] = next_worker;
             start_times_[i] =  startTime;
-          //  std::cout<<"assigned_workers_[i]:"<<i<<" "<<next_worker<<"\n";
-          //  std::cout<<"start_times_[i]:"<<i<<" "<<startTime<<"\n";
         }
     }
 
