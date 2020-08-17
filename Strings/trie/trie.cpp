@@ -21,30 +21,23 @@ struct lea{
   map<char,int> edgesI;
 };
 
-trie build_trie(vector<string> & patterns) {
- //lea leavesTree;
- vector<lea> leavesVector;
- //leavesVector.resize(patterns.size());
- leavesVector.resize(0);
- map<char,int> mapRoot;
- std::map<char,int>::iterator it;
+trie build_trie(vector<string> &patterns) {
+ //vector<vector<int>> vec{{0}};
+ trie t;
+ edges mapT;
+ mapT.insert(0,(int)mapT.size());
+ t[0].insert(mapT);
+ /*
  for(int i=0;i<patterns.size();i++){
+     //int currNode = root;
      for(int j=0;j<patterns[i].size();j++){
-         it = mapRoot.find(patterns[i][j]);
-         if(it==mapRoot.end() && j==0){
-                mapRoot.insert(std::pair<char,int>(patterns[i][j],leavesVector.size()));
-                leavesVector[leavesVector.size()].nodeChar = patterns[i][j];
-            }else{
-                //recursion until last or found
-                int levelI=1;
-                while(leavesVector[it].edgesI.find(patterns[i][j])!=edgesI.end()){
-                    
-                }
-            }
-            
+       char currS = patterns[i][j];
+       if()
      }
  }
+ */
  
+ return t;
 }
 
 int main() {
@@ -57,18 +50,13 @@ int main() {
     patterns.push_back(s);
   }
 
-  /*
-  
   trie t = build_trie(patterns);
+ /*
   for (size_t i = 0; i < t.size(); ++i) {
     for (const auto & j : t[i]) {
       std::cout << i << "->" << j.second << ":" << j.first << "\n";
     }
   }
-
-  
-  */
-  
-  
+*/
   return 0;
 }
