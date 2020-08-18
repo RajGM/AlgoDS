@@ -4,11 +4,16 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <map>
 
 using namespace std;
+using std::map;
 
 int const Letters =    4;
 int const NA      =   -1;
+
+typedef map<char, int> edges;
+typedef vector<edges> trie;
 
 struct Node
 {
@@ -37,18 +42,60 @@ int letterToIndex (char letter)
 	}
 }
 
-vector <int> solve (const string& text, int n, const vector <string>& patterns)
+trie build_trie(vector<string> &patterns) {
+ 
+ if (patterns.empty()) {
+        return trie{};
+    }
+ trie t{edges{}}; 
+ int root{0},cnt{0};
+ 
+ for(auto& i:patterns){
+     int currentN = root;
+     for(auto j:i){
+         if(t[currentN].find(j)!=t[currentN].end()){
+             currentN = t[currentN][j];
+         }else{
+            t.emplace_back(edges{});
+            t[currentN][j] = ++cnt;
+            currentN = cnt;
+         }
+     }
+ }
+ 
+ return t;
+}
+
+vector <int> solve (const string& text, int n,vector <string>& patterns)
 {
 	vector <int> result;
-
+	trie t = build_trie(patterns);
 	// write your code here
+	char firT = text[0];
+	int rootT = 0;
+	for(int i=0;i<text.size();++i){
+		int currV =0;
+		int currSId = i;
+		char currS = text[currSId];
+		while(true){
+		if(t[currV].empty()){
+			result.push_back(i);
+			break;
+		}else if(t[currV].find(currS)!=t[currV].end()){
+			currV = t[currV][currS];
+			currS = text[++currSId];
+		}else{
+			break;
+		}
+	}
 
+	}
 	return result;
 }
 
 int main (void)
 {
-	string t;
+	string text;
 	cin >> text;
 
 	int n;
@@ -61,7 +108,7 @@ int main (void)
 	}
 
 	vector <int> ans;
-	ans = solve (t, n, patterns);
+	ans = solve (text, n, patterns);
 
 	for (int i = 0; i < (int) ans.size (); i++)
 	{
