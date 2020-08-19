@@ -12,42 +12,41 @@ using std::vector;
 
 string InverseBWT(const string& bwt) {
   string text = "";
-  text.resize(bwt.size());
-  vector<string> twoV(bwt.size(),"00");
-  string tmpOri = bwt;
-  string tmpNew = bwt;
-  std::sort(tmpNew.begin(),tmpNew.end());
-  std::map<char,int> charVo;
-  std::map<char,int> charVn;
-  vector<int> oldCount(bwt.size(),0);
-  vector<int> newCount(bwt.size(),0);
-
-  charVo.insert(std::pair<char,int>('A',0));
-  charVo.insert(std::pair<char,int>('C',0));
-  charVo.insert(std::pair<char,int>('G',0));
-  charVo.insert(std::pair<char,int>('T',0));
-  charVo.insert(std::pair<char,int>('$',0));
-  
-  charVn.insert(std::pair<char,int>('A',0));
-  charVn.insert(std::pair<char,int>('C',0));
-  charVn.insert(std::pair<char,int>('G',0));
-  charVn.insert(std::pair<char,int>('T',0));
-  charVn.insert(std::pair<char,int>('$',0));
-  
+  string tmpB = bwt;
+  std::sort(tmpB.begin(),tmpB.end());
+  vector<string> tmpSV;
+  vector<string> tmpSV2;
+  //tmpSV.resize(bwt.size());
   for(int i=0;i<bwt.size();i++){
-    twoV[i][0] = tmpNew[i];
-    twoV[i][1] = tmpOri[i];
-
-    newCount[i] = charVn.find(twoV[i][0])->second;
-    charVn[twoV[i][0]] = charVn.find(twoV[i][0])->second+1;
-  
-    oldCount[i] = charVo.find(twoV[i][1])->second;
-    charVo[twoV[i][1]] = charVo.find(twoV[i][1])->second+1;
+    string tmpString;
+    tmpString.resize(2);
+    tmpString[0]=bwt[i];
+    tmpString[1]=tmpB[i];
+    tmpSV.push_back(tmpString);
+   }
+    std::sort(tmpSV.begin(),tmpSV.end()); 
+    for(int i=0;i<tmpSV.size();i++){
+      std::cout<<tmpSV[i]<<"\n";
+   }
+    
+  if(bwt.size()>2){
+      for(int i=0;i<bwt.size()-2;i++){
+          for(int j=0;j<bwt.size();j++){
+            string tmpS;
+            tmpS.resize(1);
+            tmpS[0]=bwt[j];
+            tmpS.append(tmpSV[j]);
+            tmpSV[j]=tmpS;
+          }
+          std::sort(tmpSV.begin(),tmpSV.end());
+      }
   }
- 
-   for(int i=0;i<bwt.size();i++){
-        
-    }
+  
+  for(int i=0;i<tmpSV.size();i++){
+      std::cout<<tmpSV[i]<<"\n";
+   }
+  
+  
   
   return text;
 }

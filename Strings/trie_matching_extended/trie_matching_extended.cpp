@@ -4,21 +4,29 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <map>
 
 using namespace std;
+using std::map;
 
 int const Letters =    4;
 int const NA      =   -1;
 
+typedef map<char, int> edges;
+typedef vector<edges> trie;
+
 struct Node
 {
 	int next [Letters];
-	bool patternEnd;
 
 	Node ()
 	{
 		fill (next, next + Letters, NA);
-		patternEnd = false;
+	}
+
+	bool isLeaf () const
+	{
+	    return (next[0] == NA && next[1] == NA && next[2] == NA && next[3] == NA);
 	}
 };
 
@@ -34,18 +42,98 @@ int letterToIndex (char letter)
 	}
 }
 
-vector <int> solve (string text, int n, vector <string> patterns)
+trie build_trie(vector<string> &patterns) {
+ 
+ if (patterns.empty()) {
+        return trie{};
+    }
+ trie t{edges{}}; 
+ int root{0},cnt{0};
+ 
+ for(auto& i:patterns){
+     int currentN = root;
+     for(auto j:i){
+         if(t[currentN].find(j)!=t[currentN].end()){
+             currentN = t[currentN][j];
+         }else{
+            t.emplace_back(edges{});
+            t[currentN][j] = ++cnt;
+            currentN = cnt;
+         }
+     }
+ }
+ 
+ return t;
+}
+
+vector <int> solve (const string& text, int n,vector <string>& patterns)
 {
 	vector <int> result;
-
+	trie t = build_trie(patterns);
+	map<std::string,int> pattMap;
+	for(int i=0;i<patterns.size();i++){
+		pattMap.insert(std::pair<std::string,int>(patterns[i],pattMap.size()));
+	}
+	vector<int> pattSize;
+	for(int i=0;i<patterns.size();i++){
+	    pattSize.push_back(patterns[i].size());
+	}
+	/*
+	std::cout<<"Mapping"<<"\n";
+	for (auto& x: pattMap) {
+    std::cout << x.first << ": " << x.second << '\n';
+  } 
+	*/
+	
 	// write your code here
+	for(int i=0;i<text.size();++i){
+		int currV =0;
+		int currSId = i;
+		char currS = text[currSId];
+		int tC =0;
+		while(true){
+		tC=currV+1;
+		string strT =  text.substr(i,tC); 
+		if(pattMap.find(strT)!=pattMap.end()){
+		     //   std::cout<<"Match without end:"<<strT<<" i:"<<i<<"\n";
+		        result.push_back(i);
+		}
+		
+		
+		
+		if(t[currV].empty()){
+			result.push_back(i);
+			break;
+		}else if(t[currV].find(currS)!=t[currV].end()){
+			currV = t[currV][currS];
+			currS = text[++currSId];
+		}else{
+		    break;
+		}
+	}
 
-	return result;
+	}
+
+     //auto res = unique(result.begin(), result.end());
+    vector<int> finalR;
+    if(result.size()>=1){
+        finalR.push_back(result[0]);
+        for(int i=1;i<result.size();i++){
+        if(finalR[finalR.size()-1]!=result[i]){
+        finalR.push_back(result[i]);
+    }    
+    }    
+    }
+    
+    
+
+
+	return finalR;
 }
 
 int main (void)
 {
-	string t;
+	string text;
 	cin >> text;
 
 	int n;
@@ -58,7 +146,7 @@ int main (void)
 	}
 
 	vector <int> ans;
-	ans = solve (t, n, s);
+	ans = solve (text, n, patterns);
 
 	for (int i = 0; i < (int) ans.size (); i++)
 	{
@@ -75,3 +163,4 @@ int main (void)
 
 	return 0;
 }
+

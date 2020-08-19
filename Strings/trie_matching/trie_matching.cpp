@@ -70,9 +70,11 @@ vector <int> solve (const string& text, int n,vector <string>& patterns)
 {
 	vector <int> result;
 	trie t = build_trie(patterns);
+	map<std::string,int> pattMap;
+	for(int i=0;i<patterns.size();i++){
+		pattMap.insert(patterns[i],pattMap.size());
+	}
 	// write your code here
-	char firT = text[0];
-	int rootT = 0;
 	for(int i=0;i<text.size();++i){
 		int currV =0;
 		int currSId = i;
