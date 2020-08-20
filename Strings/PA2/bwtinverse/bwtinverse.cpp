@@ -11,6 +11,11 @@ using std::string;
 using std::vector;
 
 string InverseBWT(const string& bwt) {
+    if(bwt.size()<=1){
+        return bwt;
+    }
+    
+    
   string text = "";
   string tmpB = bwt;
   std::sort(tmpB.begin(),tmpB.end());
@@ -25,10 +30,7 @@ string InverseBWT(const string& bwt) {
     tmpSV.push_back(tmpString);
    }
     std::sort(tmpSV.begin(),tmpSV.end()); 
-    for(int i=0;i<tmpSV.size();i++){
-      std::cout<<tmpSV[i]<<"\n";
-   }
-    
+   
   if(bwt.size()>2){
       for(int i=0;i<bwt.size()-2;i++){
           for(int j=0;j<bwt.size();j++){
@@ -42,12 +44,9 @@ string InverseBWT(const string& bwt) {
       }
   }
   
-  for(int i=0;i<tmpSV.size();i++){
-      std::cout<<tmpSV[i]<<"\n";
-   }
   
-  
-  
+  std::sort(tmpSV.begin(),tmpSV.end());
+  //which position to return
   return text;
 }
 
