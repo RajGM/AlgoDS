@@ -44,9 +44,16 @@ string InverseBWT(const string& bwt) {
       }
   }
   
-  
   std::sort(tmpSV.begin(),tmpSV.end());
+  
+  
   //which position to return
+  string finalans=tmpSV[0];
+  text.resize(bwt.size());
+  for(int i=0;i<bwt.size()-1;i++){
+      text[i]=finalans[i+1];
+  }
+  text[text.size()-1]='$';
   return text;
 }
 
