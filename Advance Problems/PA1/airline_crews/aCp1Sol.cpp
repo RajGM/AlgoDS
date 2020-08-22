@@ -47,12 +47,6 @@ public:
     }
 
     void add_flow(size_t id, int flow) {
-        /* To get a backward edge for a true forward edge (i.e id is even), we should get id + 1
-         * due to the described above scheme. On the other hand, when we have to get a "backward"
-         * edge for a backward edge (i.e. get a forward edge for backward - id is odd), id - 1
-         * should be taken.
-         *
-         * It turns out that id ^ 1 works for both cases. Think this through! */
         edges[id].flow += flow;
         edges[id ^ 1].flow -= flow;
     }
@@ -62,11 +56,27 @@ FlowGraph read_data() {
     int vertex_count, edge_count;
     std::cin >> vertex_count >> edge_count;
     FlowGraph graph(vertex_count);
-    for (int i = 0; i < edge_count; ++i) {
-        int u, v, capacity;
-        std::cin >> u >> v >> capacity;
-        graph.add_edge(u - 1, v - 1, capacity);
+    std::cout<<"Reading started"<<"\n";
+    for (int i = 0; i < vertex_count; i++) {
+        int u = i;
+        for(int j=vertex_count;j<edge_count+vertex_count;j++){
+            int  v;
+            std::cin >> v;
+            if(v==1){
+                graph.add_edge(u , j, 1);
+            }
+        }
     }
+    
+    std::cout<<"Reading done"<<"\n";
+    
+    for(int i=0;i<vertex_count;i++){
+        for(int j=0;j<edge_count;j++){
+            std::cout<<graph.graph[i][j]<<" ";
+        }
+        std::cout<<"\n";
+    }
+    
     return graph;
 }
 
@@ -108,12 +118,17 @@ int max_flow(FlowGraph& graph, int from, int to) {
            }
    }
    while(pre[to]!=-1);
+   
+   for(int i =0;i<pre.size();i++){
+       std::cout<<pre[i]<<" ";
+   }
 
     return flow;
 }
 
 int main() {
     std::ios_base::sync_with_stdio(false);
+    std::cout<<"Inside main "<<"\n";
     FlowGraph graph = read_data();
 
     std::cout << max_flow(graph, 0, graph.size() - 1) << "\n";

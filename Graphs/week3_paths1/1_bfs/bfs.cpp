@@ -29,12 +29,6 @@ int distance(vector<vector<int> > &adj, int s, int t,int n) {
   
   int result=0;
   if(isPath == true){
-      /*
-      while(t!=s){
-      result = result+nodeDis[t];
-      t=prevN[t];
-      }
-      */
       result = nodeDis[t];
       return result;
   }

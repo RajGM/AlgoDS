@@ -2,7 +2,6 @@
 #include <vector>
 #include <algorithm>
 #include <memory>
-
 using std::vector;
 using std::cin;
 using std::cout;
